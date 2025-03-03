@@ -14,7 +14,7 @@ const generateArray = (size: number): number[] => {
 };
 const MergeSortVisualizer: React.FC = () => {
   // You can change the initial array or randomize it as needed.
-  const [initialArray, setInitialArray] = useState<number[]>(generateArray(16));
+  const [initialArray, _] = useState<number[]>(generateArray(16));
   const [currentStep, setCurrentStep] = useState(0);
   const [steps, setSteps] = useState<Step[]>([]);
   const [sorting, setSorting] = useState(false);

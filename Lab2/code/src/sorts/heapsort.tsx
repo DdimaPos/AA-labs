@@ -1,6 +1,6 @@
 // HeapSortVisualizer.tsx
 import { Button } from '@/components/ui/button';
-import React, { useEffect, useState } from 'react';
+import React, { JSX, useEffect, useState } from 'react';
 import { Tree, TreeNode } from 'react-organizational-chart';
  // Adjust the path as needed
 

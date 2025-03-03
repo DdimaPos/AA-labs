@@ -17,7 +17,7 @@ const generateArray = (size: number): number[] => {
 };
 
 const RadixSortVisualizer: React.FC = () => {
-  const [initialArray, setInitialArray] = useState<number[]>(generateArray(10));
+  const [initialArray, _] = useState<number[]>(generateArray(10));
   const [currentStep, setCurrentStep] = useState(0);
   const [steps, setSteps] = useState<Step[]>([]);
   const [sorting, setSorting] = useState(false);
@@ -66,7 +66,7 @@ const RadixSortVisualizer: React.FC = () => {
 
       steps.push({
         mainArray: [...main],
-        buckets: buckets.map((b) => []),
+        buckets: buckets.map(() => []),
         countArray: Array(10).fill(0),
         activeMainIndices: [],
         activeBucketIndices: [],
@@ -114,7 +114,7 @@ const RadixSortVisualizer: React.FC = () => {
       
       <div className="mb-4">
         <h3 className="text-md font-semibold">Main Array</h3>
-        <div className="flex space-x-2">
+        <div className="flex space-x-2 justify-center">
           {current.mainArray.map((value, index) => (
             <motion.div
               key={index}
