@@ -17,7 +17,7 @@ const generateArray = (size: number): number[] => {
 };
 
 const QuickSortVisualizer: React.FC = () => {
-  const initialArray = generateArray(16);
+  const [initialArray, setInitialArray] = useState<number[]>(generateArray(16));
   const [currentStep, setCurrentStep] = useState(0);
   const [steps, setSteps] = useState<Step[]>([]);
   const [started, setStarted] = useState(false);

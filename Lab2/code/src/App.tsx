@@ -4,6 +4,7 @@ import MergeSortVisualizer from './sorts/mergesort'
 import HeapSortVisualizer from './sorts/heapsort'
 import QuickSortVisualizer from './sorts/quicksort'
 import { Button } from './components/ui/button'
+import RadixSortVisualizer from './sorts/radixsort'
 type Variants = 0 | 1 | 2| 3;  
 function App() {
   const [variant, setVariant] = useState<Variants>(0)
@@ -17,7 +18,7 @@ function App() {
           case 2:
             return <QuickSortVisualizer/>
           case 3:
-            return <MergeSortVisualizer/>
+            return <RadixSortVisualizer/>
         }
   }
   return (
@@ -26,7 +27,7 @@ function App() {
         <Button onClick={()=> setVariant(0)}>Merge Sort</Button>
         <Button onClick={()=> setVariant(1)}>Heap Sort</Button>
         <Button onClick={()=> setVariant(2)}>Quick Sort</Button>
-        <Button onClick={()=> setVariant(3)}>Placeholder sort</Button>
+        <Button onClick={()=> setVariant(3)}>Radix sort</Button>
       </div>
       {renderVisualizer()}
     </div>
