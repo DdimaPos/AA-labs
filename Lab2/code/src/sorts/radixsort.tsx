@@ -11,13 +11,11 @@ interface Step {
   rebuildingIndices: number[];
   description?: string;
 }
+interface Props{
+  initialArray: number[];
+}
 
-const generateArray = (size: number): number[] => {
-  return Array.from({ length: size }, () => Math.floor(Math.random() * 1000));
-};
-
-const RadixSortVisualizer: React.FC = () => {
-  const [initialArray, _] = useState<number[]>(generateArray(10));
+const RadixSortVisualizer: React.FC<Props> = ({initialArray}) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [steps, setSteps] = useState<Step[]>([]);
   const [sorting, setSorting] = useState(false);
