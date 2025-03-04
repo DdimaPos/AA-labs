@@ -9,12 +9,10 @@ interface Step {
   activeTempIndices: number[];
   description?: string;
 }
-const generateArray = (size: number): number[] => {
-  return Array.from({ length: size }, () => Math.floor(Math.random() * 100) + 1);
-};
-const MergeSortVisualizer: React.FC = () => {
-  // You can change the initial array or randomize it as needed.
-  const [initialArray, _] = useState<number[]>(generateArray(16));
+interface Props{
+  initialArray: number[];
+}
+const MergeSortVisualizer: React.FC<Props> = ({initialArray}) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [steps, setSteps] = useState<Step[]>([]);
   const [sorting, setSorting] = useState(false);
@@ -44,7 +42,7 @@ const MergeSortVisualizer: React.FC = () => {
         right = m;
       const temp: number[] = [];
 
-      // Record starting the merge operation.
+      //record starting the merge operation.
       steps.push({
         mainArray: [...main],
         tempArray: [...temp],
@@ -53,7 +51,6 @@ const MergeSortVisualizer: React.FC = () => {
         description: `Merging subarray indices [${l}, ${r})`,
       });
 
-      // While both subarrays have elements, compare and append the smaller one.
       while (left < m && right < r) {
         steps.push({
           mainArray: [...main],
@@ -85,7 +82,6 @@ const MergeSortVisualizer: React.FC = () => {
         }
       }
 
-      // Process any remaining elements from the left half.
       while (left < m) {
         steps.push({
           mainArray: [...main],
@@ -105,7 +101,7 @@ const MergeSortVisualizer: React.FC = () => {
         left++;
       }
 
-      // Process any remaining elements from the right half.
+      //process any remaining elements from the right half.
       while (right < r) {
         steps.push({
           mainArray: [...main],
@@ -125,7 +121,7 @@ const MergeSortVisualizer: React.FC = () => {
         right++;
       }
 
-      // Copy the merged (temporary) array back into the main array.
+      //copy the merged (temporary) array back into the main array.
       for (let i = l; i < r; i++) {
         main[i] = temp[i - l];
         steps.push({
@@ -159,7 +155,6 @@ const MergeSortVisualizer: React.FC = () => {
     }
   }, [sorting, currentStep, steps]);
 
-  // Get the current step to display. If no step yet, show initial state.
   const current: Step =
     steps[currentStep - 1] || {
       mainArray: initialArray,

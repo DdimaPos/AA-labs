@@ -41,7 +41,6 @@ const HeapSortVisualizer: React.FC<HeapSortVisualizerProps> = ({ initialArray })
     }
   };
 
-  // Returns Tailwind classes for a node at a given index
   const getNodeClass = (index: number): string => {
     const base = "px-3 py-1 border border-black rounded inline-block text-center m-2";
     if (currentStep.swapIndices && (currentStep.swapIndices[0] === index || currentStep.swapIndices[1] === index)) {
@@ -51,7 +50,6 @@ const HeapSortVisualizer: React.FC<HeapSortVisualizerProps> = ({ initialArray })
     return base;
   };
 
-  // Recursively render the tree representation of the heap.
   const renderTree = (index: number): JSX.Element | null => {
     if (index >= currentStep.array.length) return null;
     return (

@@ -11,13 +11,11 @@ interface Step {
   description: string;
   action?: "compare" | "swap" | "pivotPlacement";
 }
+interface Props{
+  initialArray: number[]
+}
 
-const generateArray = (size: number): number[] => {
-  return Array.from({ length: size }, () => Math.floor(Math.random() * 100) + 1);
-};
-
-const QuickSortVisualizer: React.FC = () => {
-  const [initialArray, _] = useState<number[]>(generateArray(16));
+const QuickSortVisualizer: React.FC<Props> = ({initialArray}) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [steps, setSteps] = useState<Step[]>([]);
   const [started, setStarted] = useState(false);
@@ -75,11 +73,11 @@ const QuickSortVisualizer: React.FC = () => {
 
     const partition = (low: number, high: number): number => {
       const pivot = main[high];
-      // Highlight the pivot (red), left margin (low, green) and right margin (high, purple)
+      
       recordStep(`Choosing pivot ${pivot} at index ${high}`, [], high, low, high);
       let i = low - 1;
       for (let j = low; j < high; j++) {
-        // Highlight current element being compared (orange) along with pivot and margins.
+        
         recordStep(
           `Comparing element at index ${j} (${main[j]}) with pivot ${pivot}`,
           [j],
@@ -125,7 +123,7 @@ const QuickSortVisualizer: React.FC = () => {
     setStarted(true);
   };
 
-  // If not started, show the initial state with instructions.
+  
   const current: Step =
     started && steps.length > 0
       ? steps[currentStep]
@@ -145,18 +143,18 @@ const QuickSortVisualizer: React.FC = () => {
         <h3 className="text-md font-semibold">Array</h3>
         <div className="flex space-x-2">
           {current.mainArray.map((value, index) => {
-            // Determine background based on role and action.
-            let bgColor = "bg-blue-500"; // Default color
+            
+            let bgColor = "bg-blue-500";
             if (index === current.pivotIndex) {
-              bgColor = "bg-red-500"; // Pivot highlighted in red
+              bgColor = "bg-red-500";
             } else if (current.action === "swap" && current.activeIndices.includes(index)) {
-              bgColor = "bg-yellow-500"; // Swapped elements highlighted in yellow
+              bgColor = "bg-yellow-500"; 
             } else if (current.action === "compare" && current.activeIndices.includes(index)) {
-              bgColor = "bg-orange-500"; // Compared elements highlighted in orange
+              bgColor = "bg-orange-500";
             } else if (index === current.leftIndex) {
-              bgColor = "bg-green-500"; // Left boundary highlighted in green
+              bgColor = "bg-green-500"; 
             } else if (index === current.rightIndex) {
-              bgColor = "bg-purple-500"; // Right boundary highlighted in purple
+              bgColor = "bg-purple-500";
             }
 
             return (
@@ -167,7 +165,6 @@ const QuickSortVisualizer: React.FC = () => {
                 >
                   {value}
                 </motion.div>
-                {/* Overlay labels */}
                 {index === current.pivotIndex && (
                   <span className="absolute top-0 left-0 text-[10px] text-white bg-black bg-opacity-50 px-1 rounded">
                     Pivot
@@ -198,7 +195,7 @@ const QuickSortVisualizer: React.FC = () => {
           })}
         </div>
       </div>
-      {/* Controls */}
+      
       <div className="flex space-x-2 mb-4">
         {!started && (
           <Button onClick={startQuickSort}>
@@ -226,7 +223,7 @@ const QuickSortVisualizer: React.FC = () => {
           </>
         )}
       </div>
-      {/* Legend */}
+      
       <div className="text-sm">
         <p>
           <span className="inline-block w-4 h-4 bg-red-500 mr-1"></span> Pivot
