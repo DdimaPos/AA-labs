@@ -87,7 +87,6 @@ To analyze and compare the sorting algorithms, we define the following input dat
     \item Size of the Input (n):
       \begin{itemize}
         \item Small datasets (\textit{n} = 100)  
-        \item Medium datasets (\textit{n} = 10,000)  
         \item Large datasets (\textit{n} = 1,000,000)  
       \end{itemize}
 
@@ -96,27 +95,91 @@ To analyze and compare the sorting algorithms, we define the following input dat
         \item Random ordered elements
         \item Elements are already sorted in \textbf{ascending order}
         \item Elements are already sorted in \textbf{descending order}
-        \item Array contains small number of unique values, leading to high redundancy
       \end{itemize}
 
     \item Range of Values:
       \begin{itemize}
         \item Small Range [1, 100]
         \item Large Range [1, 1 000 000]
-        \item Negative and Positive Values
       \end{itemize}
 
     \item Edge Cases:
       \begin{itemize}
-        \item Single Element Array
-        \item Empty array
         \item All elements identical
       \end{itemize}
 \end{enumerate}
 
 \clearpage
 \section*{Metrics in Algorithm analysis}
-\hspace{0.8cm}
+
+\subsection*{Disabling Turbofan}
+In order to perform the algorithm analysis I've written Javascript programs that would track the execution time of each algorithm
+and run them in Node js. Node js uses V8 engine in order to execute the JavaScript programs. This engine consists of 2 components:
+\begin{itemize}
+  \item Interpreting machine Ignition
+  \item Optimizing compiler \textbf{Turbofan}, that can optimize and translate some of the JavaScript code into the machine code.
+
+\end{itemize}
+To reduce the influence of Turbofan on the validity of data, 
+I have run the algorithms with \textit{--no-opt} flag to disable Turbofan.
+This decision is motivated by the unpredictability of the optimizing compiler which can 
+optimize the code for an algorithm with a long execution time and not optimize the efficient algorithm.
+Thus I put all algorithms to equal execution conditions.
+
+\subsection*{Algorithms Implementation}
+All the algorithms can be found in the GitHub\cite{github} repository of this laboratory
+work. Each of them corresponds to the most popular implementations in JavaScript
+that are designed to reduce the influence on call stack and memory
+
+\subsection*{Results}
+After running of all the tests these are the results obtained:
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{random100.png}
+    \caption{Random numbers from range 1 - 100}
+    \label{fig:rand100}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{random10^6.png}
+    \caption{Random numbers from range 1 - 1 000 000}
+    \label{fig:rand1000000}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{random10^8.png}
+    \caption{Random numbers from range 1 - 100 000 000}
+    \label{fig:rand100000000}
+\end{figure}
+
+\clearpage
+We can easily observe that even if sorting algorithms 
+are performing nearly the same as expected, \textit{\textbf{Radix sort}} is vastly influenced 
+by the number of digits implied in the input data. You can see the differences in
+figure \ref{fig:rand100} and figure \ref{fig:rand100000000}. Even if the length of arrays is still the 
+same, Radix sort has to perform editional placements of elements for each aditional digit that the
+largest number has. This is why it is important to mention that even if performance of 
+Radix sort can be low, it's time execution is highly influenced by the number of digits of the 
+largest number and complexity of the Radix sort is always mentioned as \textit{\textbf{O(n*d)}}, not O(n)
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{ascen100.png}
+    \caption{Numbers in ascending order in range 1 - 100}
+    \label{fig:ascending100}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{ascen1000000.png}
+    \caption{Numbers in ascending order in range 1 - 100 000 000}
+    \label{fig:ascending1000000}
+\end{figure}
+
+
+
 
 \clearpage
 \section*{Graphical Representation}
@@ -128,8 +191,8 @@ To analyze and compare the sorting algorithms, we define the following input dat
 
 \begin{thebibliography}{9}
 
-  \bibitem{bytecoderef}
-    \href{https://medium.com/dailyjs/understanding-v8s-bytecode-317d46c94775}{Franceska
+  \bibitem{bytecoderef} \href{https://medium.com/dailyjs/understanding-v8s-bytecode-317d46c94775}{Franceska
       Hinkelman (2017) - Understanding bytecode \emph{Medium}}
+      \bibitem{github} \href{https://github.com/DdimaPos/AA-labs/tree/main/Lab2}{GitHub repository of current laboratory work}
 \end{thebibliography}
 \end{document}

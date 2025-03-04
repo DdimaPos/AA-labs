@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024/Arch Linux) (preloaded format=pdflatex 2025.2.20)  3 MAR 2025 12:24
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024/Arch Linux) (preloaded format=pdflatex 2025.2.20)  4 MAR 2025 21:11
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -478,6 +478,31 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 [3
 
 ]
+<random100.png, id=45, 1925.1925pt x 1005.7575pt>
+File: random100.png Graphic file (type png)
+<use random100.png>
+Package pdftex.def Info: random100.png  used on input line 138.
+(pdftex.def)             Requested size: 430.00462pt x 224.62823pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+<random10^6.png, id=46, 1924.18875pt x 1011.78pt>
+File: random10^6.png Graphic file (type png)
+<use random10^6.png>
+Package pdftex.def Info: random10^6.png  used on input line 145.
+(pdftex.def)             Requested size: 430.00462pt x 226.09682pt.
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+<random10^8.png, id=47, 1926.19624pt x 1011.78pt>
+File: random10^8.png Graphic file (type png)
+<use random10^8.png>
+Package pdftex.def Info: random10^8.png  used on input line 152.
+(pdftex.def)             Requested size: 430.00462pt x 225.86525pt.
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 14.49998pt, for example:
@@ -495,7 +520,55 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[5
+[5 <./random100.png (PNG copy)> <./random10^6.png (PNG copy)>]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[6 <./random10^8.png (PNG copy)>]
+<ascen100.png, id=71, 1927.2pt x 1007.765pt>
+File: ascen100.png Graphic file (type png)
+<use ascen100.png>
+Package pdftex.def Info: ascen100.png  used on input line 169.
+(pdftex.def)             Requested size: 430.00462pt x 224.84593pt.
+<ascen1000000.png, id=72, 1927.2pt x 1009.7725pt>
+File: ascen1000000.png Graphic file (type png)
+<use ascen1000000.png>
+Package pdftex.def Info: ascen1000000.png  used on input line 176.
+(pdftex.def)             Requested size: 430.00462pt x 225.29384pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[7
+
+ <./ascen100.png (PNG copy)>]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[8 <./ascen1000000.png (PNG copy)>]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 14.49998pt, for example:
+(fancyhdr)                \setlength{\headheight}{14.49998pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
+
+[9
 
 ]
 
@@ -505,7 +578,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[6
+[10
 
 ] (./report.aux)
  ***********
@@ -516,18 +589,18 @@ Package rerunfilecheck Info: File `report.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 14244 strings out of 476076
- 225857 string characters out of 5793775
- 1933187 words of memory out of 5000000
- 36176 multiletter control sequences out of 15000+600000
- 562929 words of font info for 52 fonts, out of 8000000 for 9000
+ 14308 strings out of 476076
+ 227019 string characters out of 5793775
+ 1932187 words of memory out of 5000000
+ 36226 multiletter control sequences out of 15000+600000
+ 563288 words of font info for 53 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  69i,11n,79p,371b,517s stack positions out of 10000i,1000n,20000p,200000b,200000s
-</usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfrm1440.pfb>
-Output written on report.pdf (7 pages, 95011 bytes).
+</usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmbxti10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfrm1440.pfb>
+Output written on report.pdf (11 pages, 526233 bytes).
 PDF statistics:
- 97 PDF objects out of 1000 (max. 8388607)
- 73 compressed objects within 1 object stream
- 25 named destinations out of 1000 (max. 500000)
- 6 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 141 PDF objects out of 1000 (max. 8388607)
+ 105 compressed objects within 2 object streams
+ 38 named destinations out of 1000 (max. 500000)
+ 31 words of extra memory for PDF output out of 10000 (max. 10000000)
 
