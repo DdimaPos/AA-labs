@@ -70,16 +70,6 @@ Study and empirical analysis of sorting algorithms. Analysis of quickSort, merge
 \end{enumerate}
 
 \clearpage
-\section*{Algorithm Implementation}
-\hspace{0.8cm}
-
-Implementation of the algorithm will be done in Javascript and running in Node environment.
-In order to reduce the possible fluctuations, all the algorithms will be run in bytecode 
-mode without any optimizations. In this way I ensure that all algorithms are 
-runned in same conditions and are not influences by the particular optimizations applyed by
-runtime.\cite{bytecoderef}
-
-\clearpage
 \section*{Input data}
 \hspace{0.8cm}
 To analyze and compare the sorting algorithms, we define the following input data conditions:
@@ -116,7 +106,7 @@ To analyze and compare the sorting algorithms, we define the following input dat
 In order to perform the algorithm analysis I've written Javascript programs that would track the execution time of each algorithm
 and run them in Node js. Node js uses V8 engine in order to execute the JavaScript programs. This engine consists of 2 components:
 \begin{itemize}
-  \item Interpreting machine Ignition
+  \item Interpreting machine Ignition\cite{bytecoderef}
   \item Optimizing compiler \textbf{Turbofan}, that can optimize and translate some of the JavaScript code into the machine code.
 
 \end{itemize}
@@ -177,22 +167,91 @@ largest number and complexity of the Radix sort is always mentioned as \textit{\
     \caption{Numbers in ascending order in range 1 - 100 000 000}
     \label{fig:ascending1000000}
 \end{figure}
+\clearpage
+Besides the slow down of Radix sort already described above we can see that \textbf{Quick Sort} is already loosing
+his positions to Merge Sort (figure \ref{fig:ascending1000000} and only there). This happens because of logic behind the Quick sort. To 
+perform the sorting it uses a \textit{pivot}. It is a flag that is used to arrange the 
+elements smaller than pivot to the left side of the partition 
+and the greater numbers to the right side of the partition. 
+In best case, the Time Complexity of Quick sort 
+is \textbf{\textit{O(n*logN)}}. This scenario can occur if everytime the chosen pivot is the element that should
+be placed in the middle of the partition. BUT. \textbf{If on each iteration the chosen pivot 
+leads to biggest possible number of comparisons, then the Time Complexity 
+of Quick Sort is \textit{$O(n^2)$}}. In this case smaller range meant a big number of redundant comparisons 
+between same elements. This issue is not so evident in figure \ref{fig:ascending1000000}
+
+It will perform the comparison on all the elements of the array with no proper partitioning, because elements are repeating themself. Same effect we can see on next diagrams.
+
+Also we can see a speed improovement for over sorting algorithms.
 
 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{iden1000.png}
+    \caption{Array with the same number 1000}
+    \label{fig:identical1000}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{iden1000000.png}
+    \caption{Array with the same number 1 000 000}
+    \label{fig:identical1000000}
+\end{figure}
+
+\clearpage
+Identical numbers are drastically disadvantaging Quick sort, because it has to 
+do the comparisons literarly for all of the elements in current partition and reach its highest 
+time complexity. 
+
+On the other hand Heap sort is the fastest in this case. This happens because the hepify function does not 
+have to swap any of the elements in the heap and can directly return the same 
+tree as the result. Only thing that it needs to do is to pass each node and just check it.
 
 
 \clearpage
 \section*{Graphical Representation}
 \hspace{0.8cm}
+Graphical representation was done in React, deployed on Vercel and can be accessed online by link \cite{site}.
+I decided to provide a more practical representation of the sorting algorithms rather than moving bars on the
+screen. In my subjective opinion it is not a good way to understand sorting algorithms.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{merge_im.png}
+    \caption{Representation of Merge Sort}
+\end{figure}
 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{quick_im.png}
+    \caption{Representation of Quick Sort}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.7\textwidth]{heap_im.png}
+    \caption{Representation of Heap Sort}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{radix_im.png}
+    \caption{Representation of Radix Sort}
+\end{figure}
 \clearpage
 \section*{Conclusions}
 \hspace{0.6cm} 
+In conclusion I can say that the most reliable and predictable sorting algorithm is Merging Sort.
+In each case it performed relatively well, which is a very good result considering 
+that Quick Sort(considered the fastest sorting algorithm) is running with 
+complexity near to $n^2$. If you look at each metric, you can see that the execution time of
+Merge Sort is constant. This is why it is mostly used as default sorting algorithms.
 
 \begin{thebibliography}{9}
 
   \bibitem{bytecoderef} \href{https://medium.com/dailyjs/understanding-v8s-bytecode-317d46c94775}{Franceska
       Hinkelman (2017) - Understanding bytecode \emph{Medium}}
-      \bibitem{github} \href{https://github.com/DdimaPos/AA-labs/tree/main/Lab2}{GitHub repository of current laboratory work}
+  \bibitem{github} \href{https://github.com/DdimaPos/AA-labs/tree/main/Lab2}{GitHub repository of current laboratory work}
+  \bibitem{site} \href{https://sorting-algorithms-visualizer-rho.vercel.app/}{Graphical representation of the sorting algorithms}
 \end{thebibliography}
 \end{document}
