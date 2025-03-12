@@ -141,7 +141,7 @@ const QuickSortVisualizer: React.FC<Props> = ({initialArray}) => {
       </div>
       <div className="mb-4">
         <h3 className="text-md font-semibold">Array</h3>
-        <div className="flex space-x-2">
+        <div className="flex space-x-2 justify-center">
           {current.mainArray.map((value, index) => {
             
             let bgColor = "bg-blue-500";
@@ -196,7 +196,7 @@ const QuickSortVisualizer: React.FC<Props> = ({initialArray}) => {
         </div>
       </div>
       
-      <div className="flex space-x-2 mb-4">
+      <div className="flex space-x-2 mb-4 justify-center">
         {!started && (
           <Button onClick={startQuickSort}>
             Start Quick Sort

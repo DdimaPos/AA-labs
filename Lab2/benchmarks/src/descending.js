@@ -7,12 +7,10 @@ import * as fs from "node:fs"
 
 const ARRAY_SIZES = [1000, 5000, 10000, 30000, 50000, 70000, 100000, 200000, 400000, 700000, 1000000];
 
-// Function to generate an ordered array in ascending order within the range [1, 100]
 function generateRandomArray(size) {
     return Array.from({ length: size }, (_, i) => (i % 1000000) + 1).sort((a, b) => b - a);
 }
 
-// Function to measure sorting time
 function benchmarkSort(sortFunction, name) {
     let results = [];
     for (let size of ARRAY_SIZES) {
@@ -34,14 +32,12 @@ const mergeSortResults = benchmarkSort(mergeSort, "Merge Sort");
 const heapSortResults = benchmarkSort(heapSort, "Heap Sort");
 const radixSortResults = benchmarkSort(radixSort, "Radix Sort");
 
-// Formatting output
 const output = `Array sizes\n${JSON.stringify(ARRAY_SIZES)}\n\n` +
     `Merge Sort res\n${JSON.stringify(mergeSortResults)}\n\n`+
     `Quick Sort res\n${JSON.stringify(quickSortResults)}\n\n` +
     `Heap Sort res\n${JSON.stringify(heapSortResults)}\n\n` +
     `Radix Sort res\n${JSON.stringify(radixSortResults)}\n`;
 
-// Writing results to file
 fs.writeFileSync("descending1_1000000.txt", output, "utf-8");
 
 console.log("Benchmark completed. Results saved in random1_100.txt");
