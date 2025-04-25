@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Directed Graph BFS/DFS Visualizer</title>
+  <script src="https://unpkg.com/vis-data/peer/esm/vis-data.min.js"></script>
+  <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+  <link href="https://unpkg.com/vis-network/styles/vis-network.min.css" rel="stylesheet" />
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    label, button { margin: 5px; }
+    #graphContainer { height: 500px; border: 1px solid #ccc; margin-bottom: 20px; }
+    pre { background: #eee; padding: 10px; border-radius: 5px; max-height: 300px; overflow-y: auto; }
+  </style>
+</head>
+<body>
+  <h1>Directed Graph BFS/DFS Visualizer</h1>
+
+  <label>Width: <input type="number" id="width" value="2" min="1" /></label>
+  <label>Depth: <input type="number" id="depth" value="3" min="1" /></label>
+  <label>Target Node: <input type="text" id="target" value="N5" /></label>
+  <label>
+    Algorithm:
+    <select id="algorithm">
+      <option value="bfs">BFS</option>
+      <option value="dfs">DFS</option>
+    </select>
+  </label>
+  <button onclick="runGraphSearch()">Generate & Run</button>
+
+  <h2>Graph Visualization</h2>
+  <div id="graphContainer"></div>
+
+  <h2>BFS Log</h2>
+  <pre id="bfsLog"></pre>
+  <h2>DFS Log</h2>
+  <pre id="dfsLog"></pre>
+
+  <!-- <script> -->
+  <!--   class Logger { -->
+  <!--     constructor() { this.steps = []; } -->
+  <!--     log(message) { this.steps.push(message); } -->
+  <!--     getLogs() { return this.steps.join('\n'); } -->
+  <!--   } -->
+  <!---->
+  <!--   function generateDirectedGraph(width, depth) { -->
+  <!--     const graph = {}; -->
+  <!--     let nodeCount = 1; -->
+  <!---->
+  <!--     function createNodeName(index) { -->
+  <!--       return 'N' + index; -->
+  <!--     } -->
+  <!---->
+  <!--     function addChildren(parent, currentDepth) { -->
+  <!--       if (currentDepth >= depth) return; -->
+  <!--       graph[parent] = []; -->
+  <!---->
+  <!--       for (let i = 0; i < width; i++) { -->
+  <!--         const child = createNodeName(nodeCount++); -->
+  <!--         graph[parent].push(child); -->
+  <!--         addChildren(child, currentDepth + 1); -->
+  <!--       } -->
+  <!--     } -->
+  <!---->
+  <!--     const root = createNodeName(0); -->
+  <!--     addChildren(root, 0); -->
+  <!---->
+  <!--     // Ensure all nodes exist -->
+  <!--     Object.values(graph).flat().forEach(child => { -->
+  <!--       if (!graph.hasOwnProperty(child)) graph[child] = []; -->
+  <!--     }); -->
+  <!---->
+  <!--     return { graph, start: root }; -->
+  <!--   } -->
+  <!---->
+  <!--   function bfsPath(graph, start, target, logger) { -->
+  <!--     const queue = [[start]]; -->
+  <!--     const visited = new Set(); -->
+  <!--     logger.log(`Start BFS from ${start} to find ${target}`); -->
+  <!---->
+  <!--     while (queue.length > 0) { -->
+  <!--       const path = queue.shift(); -->
+  <!--       const node = path[path.length - 1]; -->
+  <!--       logger.log(`Dequeued path: ${path.join(' -> ')}`); -->
+  <!---->
+  <!--       if (!visited.has(node)) { -->
+  <!--         logger.log(`Visiting: ${node}`); -->
+  <!--         visited.add(node); -->
+  <!--         if (node === target) { -->
+  <!--           logger.log(`Target ${target} found!`); -->
+  <!--           return path; -->
+  <!--         } -->
+  <!---->
+  <!--         for (const neighbor of graph[node]) { -->
+  <!--           logger.log(`Queueing: ${neighbor} from ${node}`); -->
+  <!--           queue.push([...path, neighbor]); -->
+  <!--         } -->
+  <!--       } -->
+  <!--     } -->
+  <!---->
+  <!--     logger.log(`Target ${target} not found.`); -->
+  <!--     return null; -->
+  <!--   } -->
+  <!---->
+  <!--   function dfsPath(graph, start, target, logger) { -->
+  <!--     const stack = [[start]]; -->
+  <!--     const visited = new Set(); -->
+  <!--     logger.log(`Start DFS from ${start} to find ${target}`); -->
+  <!---->
+  <!--     while (stack.length > 0) { -->
+  <!--       const path = stack.pop(); -->
+  <!--       const node = path[path.length - 1]; -->
+  <!--       logger.log(`Popped path: ${path.join(' -> ')}`); -->
+  <!---->
+  <!--       if (!visited.has(node)) { -->
+  <!--         logger.log(`Visiting: ${node}`); -->
+  <!--         visited.add(node); -->
+  <!--         if (node === target) { -->
+  <!--           logger.log(`Target ${target} found!`); -->
+  <!--           return path; -->
+  <!--         } -->
+  <!---->
+  <!--         for (const neighbor of graph[node]) { -->
+  <!--           logger.log(`Stacking: ${neighbor} from ${node}`); -->
+  <!--           stack.push([...path, neighbor]); -->
+  <!--         } -->
+  <!--       } -->
+  <!--     } -->
+  <!---->
+  <!--     logger.log(`Target ${target} not found.`); -->
+  <!--     return null; -->
+  <!--   } -->
+  <!---->
+  <!--   function visualizeGraph(graph) { -->
+  <!--     const nodes = []; -->
+  <!--     const edges = []; -->
+  <!---->
+  <!--     for (const node in graph) { -->
+  <!--       nodes.push({ id: node, label: node }); -->
+  <!--       for (const neighbor of graph[node]) { -->
+  <!--         edges.push({ from: node, to: neighbor, arrows: 'to' }); -->
+  <!--       } -->
+  <!--     } -->
+  <!---->
+  <!--     const container = document.getElementById('graphContainer'); -->
+  <!--     const data = { nodes: new vis.DataSet(nodes), edges: new vis.DataSet(edges) }; -->
+  <!--     const options = { -->
+  <!--       layout: { hierarchical: { direction: 'UD', sortMethod: 'directed' } }, -->
+  <!--       edges: { arrows: 'to' }, -->
+  <!--       physics: false -->
+  <!--     }; -->
+  <!---->
+  <!--     new vis.Network(container, data, options); -->
+  <!--   } -->
+  <!---->
+  <!--   function runGraphSearch() { -->
+  <!--     const width = parseInt(document.getElementById('width').value); -->
+  <!--     const depth = parseInt(document.getElementById('depth').value); -->
+  <!--     const target = document.getElementById('target').value; -->
+  <!---->
+  <!--     const { graph, start } = generateDirectedGraph(width, depth); -->
+  <!--     visualizeGraph(graph); -->
+  <!---->
+  <!--     const bfsLogger = new Logger(); -->
+  <!--     const dfsLogger = new Logger(); -->
+  <!---->
+  <!--     bfsPath(graph, start, target, bfsLogger); -->
+  <!--     dfsPath(graph, start, target, dfsLogger); -->
+  <!---->
+  <!--     document.getElementById('bfsLog').textContent = bfsLogger.getLogs(); -->
+  <!--     document.getElementById('dfsLog').textContent = dfsLogger.getLogs(); -->
+  <!--   } -->
+  <!-- </script> -->
+    
+  <script src="script.js">
+    </script>
+</body>
+</html>
