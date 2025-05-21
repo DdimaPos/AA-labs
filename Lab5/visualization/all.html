@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pathfinding Algorithm Visualizer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Pathfinding & MST Visualizer</h1>
+        <div class="controls">
+            <label for="algorithm-select">Algorithm:</label>
+            <select id="algorithm-select">
+                <option value="dijkstra">Dijkstra's Algorithm</option>
+                <option value="floyd-warshall">Floyd-Warshall Algorithm</option>
+                <option value="prim">Prim's Algorithm (MST)</option>
+                <option value="kruskal">Kruskal's Algorithm (MST)</option>
+            </select>
+
+            <label for="graph-type-select">Graph Type:</label>
+            <select id="graph-type-select">
+                <option value="path">Path</option>
+                <option value="cycle">Cycle</option>
+                <option value="complete">Complete</option>
+                <option value="star">Star</option>
+                <option value="grid">Grid (approx N nodes)</option>
+                <option value="bipartite">Bipartite</option>
+                <option value="binary_tree">Binary Tree (approx N nodes)</option>
+                <option value="sparse">Sparse Random</option>
+                <option value="dense">Dense Random</option>
+            </select>
+
+            <label for="num-nodes">Number of Nodes:</label>
+            <input type="number" id="num-nodes" value="10" min="3" max="50">
+
+            <label for="start-node">Start Node (for Dijkstra):</label>
+            <input type="number" id="start-node" value="0" min="0">
+            
+            <label for="end-node">End Node (for Dijkstra):</label>
+            <input type="number" id="end-node" value="0" min="0">
+
+
+            <button id="run-button">Run Visualization</button>
+            <button id="reset-button">Reset Graph</button>
+        </div>
+
+        <div class="visualization-area">
+            <svg id="graph-svg" width="800" height="500"></svg>
+        </div>
+
+        <div class="logger-area">
+            <h2>Log</h2>
+            <textarea id="log-output" rows="10" readonly></textarea>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

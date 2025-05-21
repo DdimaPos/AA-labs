@@ -1,0 +1,107 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+.container {
+    max-width: 900px;
+    margin: auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+.controls {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+    align-items: center;
+}
+
+.controls label {
+    font-weight: bold;
+}
+
+.controls select, .controls input, .controls button {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.controls button {
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.controls button:hover {
+    background-color: #0056b3;
+}
+
+#reset-button {
+    background-color: #dc3545;
+}
+#reset-button:hover {
+    background-color: #c82333;
+}
+
+
+.visualization-area {
+    border: 1px solid #ddd;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fdfdfd;
+}
+
+#graph-svg {
+    max-width: 100%;
+}
+
+.node {
+    stroke: #333;
+    stroke-width: 1.5px;
+    cursor: pointer;
+}
+
+.node-label {
+    font-size: 10px;
+    text-anchor: middle;
+    dominant-baseline: central;
+    fill: black;
+    pointer-events: none; /* So labels don't interfere with node clicks */
+}
+
+.edge {
+    stroke: #999;
+    stroke-width: 2px;
+}
+.edge-weight {
+    font-size: 9px;
+    fill: #555;
+    text-anchor: middle;
+}
+
+.logger-area textarea {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px;
+    font-family: monospace;
+    background-color: #e9ecef;
+}
