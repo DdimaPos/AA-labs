@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pathfinding Visualizer</title>
+  <style>
+    body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; margin: 0; padding: 0; }
+    #controls { margin: 10px; }
+    #canvas { border: 1px solid #ccc; }
+    #logger { width: 800px; height: 200px; border: 1px solid #ccc; overflow-y: auto; padding: 5px; margin-top: 10px; background: #f9f9f9; }
+  </style>
+</head>
+<body>
+  <div id="controls">
+    <label for="algorithm">Choose Algorithm:</label>
+    <select id="algorithm">
+      <option value="dijkstra">Dijkstra</option>
+      <option value="floyd">Floyd-Warshall</option>
+    </select>
+    <button id="runBtn">Run</button>
+  </div>
+  <canvas id="canvas" width="800" height="600"></canvas>
+  <div id="logger"></div>
+
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const logger = document.getElementById('logger');
+    const N = 15;
+    const R = 250;
+    const center = { x: canvas.width / 2, y: canvas.height / 2 };
+    const graph = { nodes: {}, edges: [] };
+    const labels = Array.from({ length: N }, (_, i) => String(i + 1));
+    labels.forEach((label, i) => {
+      const angle = (2 * Math.PI * i) / N;
+      graph.nodes[label] = { x: center.x + R * Math.cos(angle), y: center.y + R * Math.sin(angle) };
+    });
+    for (let i = 0; i < N; i++) {
+      for (let j = i + 1; j < N; j++) {
+        if (Math.random() < 0.2) {
+          const w = Math.floor(Math.random() * 9) + 1;
+          graph.edges.push([labels[i], labels[j], w]);
+        }
+      }
+    }
+
+    function drawGraph(options = {}) {
+      const { visited = new Set(), current = null, compare = null, treeEdges = [] } = options;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      // draw base edges
+      graph.edges.forEach(([u, v, w]) => {
+        const nu = graph.nodes[u], nv = graph.nodes[v];
+        ctx.beginPath(); ctx.strokeStyle = '#ccc'; ctx.moveTo(nu.x, nu.y); ctx.lineTo(nv.x, nv.y); ctx.stroke();
+        const mx = (nu.x + nv.x) / 2, my = (nu.y + nv.y) / 2;
+        ctx.fillStyle = '#000'; ctx.fillText(w, mx + 5, my - 5);
+      });
+      // draw spanning tree
+      treeEdges.forEach(([u, v]) => {
+        const nu = graph.nodes[u], nv = graph.nodes[v];
+        ctx.beginPath(); ctx.strokeStyle = 'green'; ctx.lineWidth = 3;
+        ctx.moveTo(nu.x, nu.y); ctx.lineTo(nv.x, nv.y); ctx.stroke();
+        ctx.lineWidth = 1;
+      });
+      // highlight comparison
+      if (compare) {
+        const [i, j] = compare;
+        const pi = graph.nodes[i], pj = graph.nodes[j];
+        ctx.beginPath(); ctx.setLineDash([5, 5]); ctx.strokeStyle = 'red';
+        ctx.moveTo(pi.x, pi.y); ctx.lineTo(pj.x, pj.y); ctx.stroke(); ctx.setLineDash([]);
+      }
+      // draw nodes
+      Object.entries(graph.nodes).forEach(([k, p]) => {
+        ctx.beginPath(); const r = 15;
+        let fill = '#fff';
+        if (k === current) fill = 'orange'; else if (visited.has(k)) fill = 'lightblue';
+        ctx.fillStyle = fill; ctx.strokeStyle = '#000'; ctx.arc(p.x, p.y, r, 0, 2 * Math.PI); ctx.fill(); ctx.stroke();
+        ctx.fillStyle = '#000'; ctx.fillText(k, p.x - 5, p.y + 5);
+      });
+    }
+
+    function log(msg) { const p = document.createElement('div'); p.textContent = msg; logger.appendChild(p); logger.scrollTop = logger.scrollHeight; }
+    async function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+    async function visualizeDijkstra() {
+      const dist = {}, prev = {}, visited = new Set(), treeEdges = [];
+      Object.keys(graph.nodes).forEach(k => { dist[k] = Infinity; prev[k] = null; });
+      const start = '1'; log(`Source vertex: ${start}`); dist[start] = 0;
+      const Q = new Set(Object.keys(graph.nodes));
+      while (Q.size) {
+        let u = [...Q].reduce((a, b) => dist[a] < dist[b] ? a : b);
+        Q.delete(u); visited.add(u);
+        log(`Visiting ${u}, dist=${dist[u]}`);
+        drawGraph({ visited, current: u, treeEdges }); await sleep(400);
+        for (const [x, y, w] of graph.edges.filter(e => e[0] === u || e[1] === u)) {
+          const v = x === u ? y : x; const alt = dist[u] + w;
+          log(`Checking from ${u} to ${v}, alt=${alt}`);
+          drawGraph({ visited, current: u, compare: [u, v], treeEdges }); await sleep(200);
+          if (alt < dist[v]) {
+            dist[v] = alt; prev[v] = u;
+            treeEdges.push([u, v]);
+            log(`Relaxing ${u}->${v}, new dist=${alt}`);
+            drawGraph({ visited, current: v, treeEdges }); await sleep(400);
+          }
+        }
+      }
+      // destination = farthest or user-defined? log for each node
+      Object.keys(graph.nodes).forEach(dest => {
+        if (dest !== start) {
+          const path = [];
+          let cur = dest;
+          while (cur) { path.unshift(cur); cur = prev[cur]; }
+          log(`Path to ${dest}: ${path.join(' -> ')} (dist=${dist[dest]})`);
+        }
+      });
+      log('Dijkstra complete');
+      drawGraph({ visited, treeEdges });
+    }
+
+    async function visualizeFloydWarshall() {
+      const nodes = Object.keys(graph.nodes);
+      const n = nodes.length;
+      const idx = Object.fromEntries(nodes.map((k, i) => [k, i]));
+      const dist = Array(n).fill().map(() => Array(n).fill(Infinity));
+      nodes.forEach((u, i) => { dist[i][i] = 0; });
+      graph.edges.forEach(([u, v, w]) => {
+        const i = idx[u], j = idx[v];
+        dist[i][j] = w; dist[j][i] = w;
+      });
+      for (let k = 0; k < n; k++) {
+        log(`Intermediary: ${nodes[k]}`);
+        for (let i = 0; i < n; i++) {
+          for (let j = 0; j < n; j++) {
+            log(`Compare dist[${nodes[i]}][${nodes[j]}] (${dist[i][j]}) vs dist[${nodes[i]}][${nodes[k]}] + dist[${nodes[k]}][${nodes[j]}] (${dist[i][k] + dist[k][j]})`);
+            drawGraph({ current: nodes[k], compare: [nodes[i], nodes[j]] });
+            await sleep(100);
+            if (dist[i][j] > dist[i][k] + dist[k][j]) {
+              dist[i][j] = dist[i][k] + dist[k][j];
+              log(`Updating dist[${nodes[i]}][${nodes[j]}] = ${dist[i][j]}`);
+              drawGraph({ current: nodes[k], compare: [nodes[i], nodes[j]] }); await sleep(200);
+            }
+          }
+        }
+      }
+      log('Floyd-Warshall complete');
+    }
+
+    document.getElementById('runBtn').addEventListener('click', async () => {
+      logger.innerHTML = '';
+      drawGraph();
+      const alg = document.getElementById('algorithm').value;
+      if (alg === 'dijkstra') await visualizeDijkstra(); else await visualizeFloydWarshall();
+    });
+
+    drawGraph();
+  </script>
+</body>
+</html>

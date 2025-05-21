@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prim & Kruskal Visualizer</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; }
+    #controls { margin: 20px; display: flex; gap: 10px; align-items: center; }
+    #graphCanvas { border: 1px solid #ccc; background: #f9f9f9; }
+    #logger { width: 80%; max-width: 800px; height: 150px; overflow-y: auto; border: 1px solid #ddd; padding: 10px; margin-top: 20px; background: #fff; }
+    .log-entry { margin-bottom: 4px; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <div id="controls">
+    <label for="algorithm">Algorithm:</label>
+    <select id="algorithm">
+      <option value="prim">Prim</option>
+      <option value="kruskal">Kruskal</option>
+    </select>
+
+    <label for="source">Source:</label>
+    <select id="source"></select>
+
+    <label for="destination">Destination:</label>
+    <select id="destination"></select>
+
+    <button id="startBtn">Start</button>
+  </div>
+  <canvas id="graphCanvas" width="800" height="600"></canvas>
+  <div id="logger"></div>
+
+  <script>
+    class Node { constructor(id, x, y) { this.id = id; this.x = x; this.y = y; }}
+    class Edge { constructor(u, v, w) { this.u = u; this.v = v; this.w = w; }}
+
+    const canvas = document.getElementById('graphCanvas');
+    const ctx = canvas.getContext('2d');
+    const logger = document.getElementById('logger');
+    const sourceSelect = document.getElementById('source');
+    const destSelect = document.getElementById('destination');
+    const N = 10;
+    let nodes = [], edges = [];
+
+    // Initialize only once
+    initNodeSelectors();
+    generateGraph();
+    drawGraph();
+
+    function initNodeSelectors() {
+      for (let i = 0; i < N; i++) {
+        let opt1 = document.createElement('option'); opt1.value = i; opt1.text = i;
+        let opt2 = document.createElement('option'); opt2.value = i; opt2.text = i;
+        sourceSelect.appendChild(opt1);
+        destSelect.appendChild(opt2);
+      }
+      sourceSelect.value = 0;
+      destSelect.value = N - 1;
+    }
+
+    function generateGraph() {
+      for (let i = 0; i < N; i++) {
+        let x = 50 + Math.random() * (canvas.width - 100);
+        let y = 50 + Math.random() * (canvas.height - 100);
+        nodes.push(new Node(i, x, y));
+      }
+      for (let i = 0; i < N; i++) {
+        for (let j = i + 1; j < N; j++) {
+          if (Math.random() < 0.4) {
+            let w = Math.floor(1 + Math.random() * 20);
+            edges.push(new Edge(i, j, w));
+          }
+        }
+      }
+    }
+
+    function drawGraph(highlightedEdges = [], treeEdges = []) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      edges.forEach(e => { ctx.strokeStyle = '#aaa'; ctx.lineWidth = 1; drawEdge(e); });
+      highlightedEdges.forEach(e => { ctx.strokeStyle = '#f39c12'; ctx.lineWidth = 3; drawEdge(e); });
+      treeEdges.forEach(e => { ctx.strokeStyle = '#27ae60'; ctx.lineWidth = 3; drawEdge(e); });
+      nodes.forEach(n => {
+        ctx.fillStyle = '#3498db'; ctx.beginPath(); ctx.arc(n.x, n.y, 10, 0, 2 * Math.PI); ctx.fill();
+        ctx.fillStyle = '#fff'; ctx.font = '12px Arial'; ctx.textAlign = 'center'; ctx.fillText(n.id, n.x, n.y + 4);
+      });
+    }
+    function drawEdge(e) {
+      const u = nodes[e.u], v = nodes[e.v];
+      ctx.beginPath(); ctx.moveTo(u.x, u.y); ctx.lineTo(v.x, v.y); ctx.stroke();
+      let mx = (u.x + v.x) / 2, my = (u.y + v.y) / 2;
+      ctx.fillStyle = '#000'; ctx.font = '12px Arial'; ctx.fillText(e.w, mx, my - 5);
+    }
+
+    function log(text) {
+      let entry = document.createElement('div'); entry.className = 'log-entry'; entry.textContent = text;
+      logger.appendChild(entry); logger.scrollTop = logger.scrollHeight;
+    }
+
+    async function prim(start) {
+      log(`Prim: Source ${start}, Destination ${destSelect.value}`);
+      let visited = new Set([start]), tree = [];
+      while (visited.size < N) {
+        let candidates = edges.filter(e => (visited.has(e.u) && !visited.has(e.v)) || (visited.has(e.v) && !visited.has(e.u)));
+        if (!candidates.length) break;
+        candidates.sort((a, b) => a.w - b.w);
+        let edge = candidates[0]; log(`Consider edge ${edge.u}-${edge.v} (w=${edge.w})`);
+        drawGraph([edge], tree); await sleep(800);
+        tree.push(edge); visited.add(edge.u); visited.add(edge.v);
+      }
+      log('Prim: MST Complete'); drawGraph([], tree);
+      logPathInTree(tree, start, +destSelect.value);
+    }
+
+    class UF { constructor(n) { this.parent = Array.from({length: n}, (_, i) => i); }
+      find(x) { return this.parent[x] === x ? x : this.parent[x] = this.find(this.parent[x]); }
+      union(a, b) { a = this.find(a); b = this.find(b); if (a !== b) this.parent[b] = a; }
+    }
+    async function kruskal() {
+      log(`Kruskal: Source ${sourceSelect.value}, Destination ${destSelect.value}`);
+      let uf = new UF(N), sorted = [...edges].sort((a, b) => a.w - b.w), tree = [];
+      for (let e of sorted) {
+        log(`Consider edge ${e.u}-${e.v} (w=${e.w})`);
+        drawGraph([e], tree); await sleep(800);
+        if (uf.find(e.u) !== uf.find(e.v)) { uf.union(e.u, e.v); log(`Accept ${e.u}-${e.v}`); tree.push(e); }
+        else log(`Reject ${e.u}-${e.v} (cycle)`);
+      }
+      log('Kruskal: MST Complete'); drawGraph([], tree);
+      logPathInTree(tree, +sourceSelect.value, +destSelect.value);
+    }
+
+    function logPathInTree(treeEdges, src, dst) {
+      let adj = Array.from({length: N}, () => []);
+      treeEdges.forEach(e => { adj[e.u].push(e.v); adj[e.v].push(e.u); });
+      let visited = new Array(N).fill(false), parent = {};
+      let queue = [src]; visited[src] = true;
+      while (queue.length) {
+        let u = queue.shift(); if (u === dst) break;
+        adj[u].forEach(v => { if (!visited[v]) { visited[v] = true; parent[v] = u; queue.push(v); }});
+      }
+      let path = [], cur = dst;
+      while (cur !== undefined) { path.push(cur); cur = parent[cur]; }
+      log(`Path: ${path.reverse().join(' -> ')}`);
+    }
+
+    function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+    document.getElementById('startBtn').addEventListener('click', () => {
+      logger.innerHTML = '';
+      drawGraph();
+      const alg = document.getElementById('algorithm').value;
+      if (alg === 'prim') prim(+sourceSelect.value);
+      else kruskal();
+    });
+  </script>
+</body>
+</html>

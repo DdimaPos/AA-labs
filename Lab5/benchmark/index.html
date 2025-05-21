@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sorting Algorithm Benchmark</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+  <center>Path finding algorithms benchmark - BFS vs DFS</center>
+  <center>W3 D11</center>
+  <canvas id="benchmarkChart"></canvas>
+  <script>
+    //depth of graph
+    const arraySizes = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+
+    // //w20-d4
+    // const bfsData = [0, 0, 1, 889];
+    // const dfsData = [86, 51, 57, 57];
+
+    // //w19-d4
+    // const bfsData = [0, 0, 0, 764];
+    // const dfsData = [44, 66, 56, 66];
+
+    // //w12-d5
+    // const bfsData = [0, 0, 0, 4, 4905];
+    // const dfsData = [81, 100, 108, 105, 94];
+
+    // //w10-d5
+    // const bfsData = [0, 0, 0, 1, 1318];
+    // const dfsData = [31, 28, 27, 27, 31];
+
+    // //w8-d6
+    // const bfsData = [0, 0, 0, 0, 21, 10484];
+    // const dfsData = [112, 115, 174, 116, 139, 113];
+
+    // //w6-d7
+    // const bfsData = [0, 0, 0, 0, 1, 209, 13957];
+    // const dfsData = [124, 138, 135, 135, 137, 135, 194];
+
+    // //w5-d8
+    // const bfsData = [0, 0, 0, 0, 1, 5, 2004, 26668];
+    // const dfsData = [183, 210, 218, 221, 217, 219, 235, 216];
+
+    // //w4-d9
+    // const bfsData = [0, 0, 0, 0, 0, 1, 7, 1360, 19594];
+    // const dfsData = [135, 219, 161, 159, 170, 168, 177, 164, 169];
+
+    //w3-d11
+    const bfsData = [0, 0, 0, 0, 0, 0, 0, 2, 81, 1936, 13395];
+    const dfsData = [82, 108, 106, 123, 122, 135, 131, 125, 125, 126, 135];
+
+    const ctx = document.getElementById("benchmarkChart").getContext("2d");
+    new Chart(ctx, {
+      type: "line",
+      data: {
+        labels: arraySizes,
+        datasets: [
+          {
+            label: "Depth first search",
+            data: dfsData,
+            borderColor: "blue",
+            fill: false,
+          },
+          {
+            label: "Breadth first search",
+            data: bfsData,
+            borderColor: "green",
+            fill: false,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {beginAtZero: true},
+          x: {
+            title: {
+              display: true,
+              text: "Graph Depth",
+            },
+          },
+        },
+      },
+    });
+  </script>
+</body>
+
+</html>
