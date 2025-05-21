@@ -46,7 +46,7 @@
     
     \vfill
     
-    Chi\u{\c{s}}in\u{\u{a}}u -- 2024
+    Chi{\c{s}}in{\u{a}}u -- 2024
 \end{center}
 \end{titlepage}
 
@@ -66,7 +66,6 @@ In this laboratory work we explore greedy algorithms for constructing minimum sp
     \item Present the data graphically and draw conclusions on algorithmic efficiency.
 \end{enumerate}
 
-\clearpage
 \section*{Input Data}
 Graphs are generated programmatically with the following parameters:
 \begin{itemize}
@@ -118,15 +117,16 @@ An interactive web-based tool was developed to illustrate algorithm execution st
   \item Choose source and destination nodes for path extraction (in addition to MST construction).
   \item View real-time logs of edge selection and acceptance/rejection.
 \end{itemize}
-The tool is accessible at \url{https://mst-visualizer.example.com}.
+The tool is accessible at \url{https://lab4-5visualising.vercel.app/}.
 
+\clearpage
 \begin{figure}[h]
     \centering
-    \begin{subfigure}{0.48\textwidth}
+    \begin{subfigure}{0.7\textwidth}
       \includegraphics[width=\linewidth]{images/vis_prim.png}
       \caption{Prim's algorithm in action}
     \end{subfigure}\hfill
-    \begin{subfigure}{0.48\textwidth}
+    \begin{subfigure}{0.7\textwidth}
       \includegraphics[width=\linewidth]{images/vis_kruskal.png}
       \caption{Kruskal's algorithm in action}
     \end{subfigure}
@@ -134,13 +134,25 @@ The tool is accessible at \url{https://mst-visualizer.example.com}.
     \label{fig:ui}
 \end{figure}
 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{images/all.png}
+    \caption{Runtime comparison on different types of graphs ($d=0.8$)}
+    \label{fig:all}
+\end{figure}
+
+\clearpage
 \section*{Conclusion}
 From our experiments:
 \begin{itemize}
   \item \textbf{Prim's} performs better on dense graphs due to efficient heap operations on many edges.
   \item \textbf{Kruskal's} excels on sparse graphs where sorting fewer edges dominates less work in Union-Find.
 \end{itemize}
-Overall, for very large, dense graphs Prim’s is preferable; for large, sparse graphs, Kruskal’s may be slightly faster.
+Overall, for very large, dense graphs Prim’s is preferable; for large, sparse graphs, Kruskal’s is slightly faster.
+
+This happens because of the approach that they use in path finding algorithm. For example Kruskal has a time complexity of 
+$ O(E log(E)) $ because it sorts the graph only by the edge size. This is why on sparse graphs it performs better.
+On the other hand Prim algorithm has a time complexity of $O(E log(V))$ where the number of edges has a lower influence
 
 Also a good observation would be that in the visual example the Prim and Kruskal give the same spanning tree.
 It's a common event if the weights of the graph are unique. If more edges hae the same weights, the Minimum 
